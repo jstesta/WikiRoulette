@@ -11,6 +11,5 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// The default (index) page route
+Route::get('/', 'WikiRouletteController@index');
