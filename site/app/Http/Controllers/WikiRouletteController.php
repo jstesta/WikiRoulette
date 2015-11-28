@@ -21,6 +21,6 @@ class WikiRouletteController extends Controller
 	public function index(Request $request, MediaWiki $mediaWiki)
 	{
 		// FIXME just for testing
-		return $mediaWiki->getRandomIds();
+		return print_r($mediaWiki->getRandomIds());
 	}
 }

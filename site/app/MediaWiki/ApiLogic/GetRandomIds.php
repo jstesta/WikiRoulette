@@ -2,6 +2,8 @@
 
 namespace App\MediaWiki\ApiLogic;
 
+use App\MediaWiki\Models\RandomIdResponse;
+
 /**
  * ApiLogic: 'API:Random'
  *
@@ -28,9 +30,10 @@ class GetRandomIds extends ApiLogic
 		$query = array(
 			'action' => 'query',
 			'list' => 'random',
-			// 'format' => 'json', // debugging
-			'rnnamespace' => 0,
+			'format' => 'json',
+			'rnnamespace' => 0, // namespace '(Main)'
 			'rnlimit' => $this->count,
+			'utf8' => '' // make sure output is UTF-8 encoded
 			);
 
 		$url = $this->baseUrl . '?' . http_build_query($query);
@@ -53,6 +56,17 @@ class GetRandomIds extends ApiLogic
 		// TODO consume JSON response
 		// TODO define errors/exceptions
 
-		return $response;
+		// TODO error checking
+
+		$decoded = json_decode($response);
+
+		$items = array();
+
+		foreach ($decoded->query->random as $random)
+		{
+			$items[] = RandomIdResponse::parseFrom($random);
+		}
+
+		return $items;
 	}
 }
