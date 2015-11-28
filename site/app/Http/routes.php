@@ -13,3 +13,6 @@
 
 // The default (index) page route
 Route::get('/', 'WikiRouletteController@index');
+
+// The detail view page route
+Route::get('/detail/{id}', 'WikiRouletteController@detail');

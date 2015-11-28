@@ -5,9 +5,10 @@ namespace App\MediaWiki\Services;
 use App;
 
 use App\MediaWiki\ApiLogic\GetRandomIds;
+use App\MediaWiki\ApiLogic\GetProperties;
 
 /**
- * Consumes the MediaWiki REST API
+ * Consumes the MediaWiki API
  */
 class MediaWikiService implements \App\MediaWiki\Contracts\MediaWiki
 {
@@ -21,13 +22,30 @@ class MediaWikiService implements \App\MediaWiki\Contracts\MediaWiki
 	 * Fetch random MediaWiki IDs
 	 *
 	 * @param int     $count
-	 * @return array
+	 * @param string  $locale
+	 * @return array array of \App\MediaWiki\Models\RandomIdResponse
 	 */
 	public function getRandomIds($count = '1', $locale = '')
 	{
 		$url = $this->buildAPIBaseURL();
 
 		$api = new GetRandomIds($url, $count);
+
+		return $api->request();
+	}
+
+	/**
+	 * Fetch properties of the given Wiki page IDs
+	 *
+	 * @param array   $ids
+	 * @param array   $properties
+	 * @return array // TODO return some interface or concrete model(s) for the result
+	 */
+	public function getProperties($ids, $properties)
+	{
+		$url = $this->buildAPIBaseURL();
+
+		$api = new GetProperties($url, $ids, $properties);
 
 		return $api->request();
 	}

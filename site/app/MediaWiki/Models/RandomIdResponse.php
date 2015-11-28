@@ -18,6 +18,9 @@ class RandomIdResponse
 		$this->title = $title;
 	}
 
+	/**
+	 * Factory method to parse from an array of data
+	 */
 	public static function parseFrom($data)
 	{
 		// TODO error checking
