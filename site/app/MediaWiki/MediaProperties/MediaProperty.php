@@ -1,6 +1,6 @@
 <?php
 
-namespace App\MediaWiki\Contracts;
+namespace App\MediaWiki\MediaProperties;
 
 /**
  * MediaWiki page property

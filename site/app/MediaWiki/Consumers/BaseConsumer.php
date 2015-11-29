@@ -5,7 +5,7 @@ namespace App\MediaWiki\Consumers;
 /**
  * Base ApiConsumer implementation
  */
-abstract class BaseConsumer implements \App\MediaWiki\Contracts\ApiConsumer
+abstract class BaseConsumer implements \App\MediaWiki\Consumers\ApiConsumer
 {
 	protected $shouldContinue = false;
 	protected $continueString;

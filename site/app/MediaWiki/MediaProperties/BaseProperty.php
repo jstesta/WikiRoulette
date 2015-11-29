@@ -5,7 +5,7 @@ namespace App\MediaWiki\MediaProperties;
 /**
  * Base MediaProperty implementation
  */
-abstract class BaseProperty implements \App\MediaWiki\Contracts\MediaProperty
+abstract class BaseProperty implements \App\MediaWiki\MediaProperties\MediaProperty
 {
 	protected $extraParameters = array();
 
