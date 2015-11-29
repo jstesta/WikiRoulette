@@ -6,6 +6,11 @@ use App;
 
 use App\MediaWiki\ApiLogic\GetRandomIds;
 use App\MediaWiki\ApiLogic\GetProperties;
+use App\MediaWiki\Api\Actions\QueryAction;
+use App\MediaWiki\Api\Apis\ListRandomApi;
+use App\MediaWiki\Api\Apis\PropInfoApi;
+use App\MediaWiki\Api\Apis\PropCategoriesApi;
+use App\MediaWiki\Api\Executor;
 
 /**
  * Consumes the MediaWiki API
@@ -23,15 +28,23 @@ class MediaWikiService implements \App\MediaWiki\Contracts\MediaWiki
 	 *
 	 * @param int     $count
 	 * @param string  $locale
-	 * @return array array of \App\MediaWiki\Models\RandomIdResponse
+	 * @return array // TODO
 	 */
-	public function getRandomIds($count = '1', $locale = '')
+	public function getRandomPages($count = '1', $locale = '')
 	{
 		$url = $this->buildAPIBaseURL();
 
-		$api = new GetRandomIds($url, $count);
+		$apis = array();
+		$apis[] = new ListRandomApi(array(ListRandomApi::PARAM_LIMIT => $count), true);
+		$apis[] = new PropInfoApi();
 
-		return $api->request();
+		$action = new QueryAction(array(), $apis);
+
+		$executor = new Executor($url, $action);
+
+		$result = $executor->request();
+		print_r($executor->finalUrls());
+		return $result;
 	}
 
 	/**

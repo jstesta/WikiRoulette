@@ -14,7 +14,7 @@ interface MediaWiki
 	 * @param string  $locale
 	 * @return array array of \App\MediaWiki\Models\RandomIdResponse
 	 */
-	public function getRandomIds($count = '1', $locale = '');
+	public function getRandomPages($count = '1', $locale = '');
 
 	/**
 	 * Fetch properties of the given Wiki page IDs
