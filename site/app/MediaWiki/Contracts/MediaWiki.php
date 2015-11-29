@@ -17,11 +17,10 @@ interface MediaWiki
 	public function getRandomPages($count = '1', $locale = '');
 
 	/**
-	 * Fetch properties of the given Wiki page IDs
+	 * Fetch detailed info of the given Wiki page ID
 	 *
-	 * @param array   $ids
-	 * @param array   $properties
+	 * @param int   $id
 	 * @return array // TODO return some interface or concrete model(s) for the result
 	 */
-	public function getProperties($ids, $properties);
+	public function getDetail($id);
 }

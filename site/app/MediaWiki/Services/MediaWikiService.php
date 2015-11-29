@@ -10,6 +10,7 @@ use App\MediaWiki\Api\Actions\QueryAction;
 use App\MediaWiki\Api\Apis\ListRandomApi;
 use App\MediaWiki\Api\Apis\PropInfoApi;
 use App\MediaWiki\Api\Apis\PropCategoriesApi;
+use App\MediaWiki\Api\Apis\PropPageImagesApi;
 use App\MediaWiki\Api\Executor;
 
 /**
@@ -42,7 +43,7 @@ class MediaWikiService implements \App\MediaWiki\Contracts\MediaWiki
 
 		$executor = new Executor($url, $action);
 
-		$result = $executor->request();
+		$result[] = $executor->request();
 		print_r($executor->finalUrls());
 		return $result;
 	}
@@ -54,13 +55,21 @@ class MediaWikiService implements \App\MediaWiki\Contracts\MediaWiki
 	 * @param array   $properties
 	 * @return array // TODO return some interface or concrete model(s) for the result
 	 */
-	public function getProperties($ids, $properties)
+	public function getDetail($id)
 	{
 		$url = $this->buildAPIBaseURL();
 
-		$api = new GetProperties($url, $ids, $properties);
+		$apis = array();
+		$apis[] = new PropCategoriesApi();
+		$apis[] = new PropPageImagesApi();
 
-		return $api->request();
+		$action = new QueryAction(array(QueryAction::PARAM_PAGEIDS => $id), $apis);
+
+		$executor = new Executor($url, $action);
+
+		$result[] = $executor->request();
+		print_r($executor->finalUrls());
+		return $result;
 	}
 
 	/**

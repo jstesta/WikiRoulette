@@ -34,8 +34,6 @@ class WikiRouletteController extends Controller
 	public function detail(Request $request, MediaWiki $mediaWiki, $id)
 	{
 		// FIXME just for testing
-		$c = new CategoriesProperty();
-		$i = new PageImagesProperty();
-		return print_r($mediaWiki->getProperties(array($id), array($c, $i)));
+		return print_r($mediaWiki->getDetail($id));
 	}
 }

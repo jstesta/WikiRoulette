@@ -39,10 +39,6 @@ abstract class ApiBase implements \App\MediaWiki\Api\Api
 		$queryStrings = array();
 		$params = array();
 
-		// add the api
-		$apiParamKey = $this->isGenerator() ? 'generator' : $this->apiQueryName();
-		$params[$apiParamKey] = $this->apiQueryIdentifier();
-
 		// add the api parameters
 		$prefix = $this->isGenerator() ? 'g' : '';
 		foreach ($this->parameterList() as $paramKey => $paramValue)

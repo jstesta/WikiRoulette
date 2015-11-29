@@ -14,6 +14,7 @@ class QueryAction implements \App\MediaWiki\Api\Action
 	const PARAM_CONTINUE = 'continue';
 	const PARAM_PAGEIDS = 'pageids';
 	const PARAM_REDIRECTS = 'redirects';
+	const PARAM_GENERATOR = 'generator';
 
 	private $parameters;
 	private $apis;
@@ -70,11 +71,27 @@ class QueryAction implements \App\MediaWiki\Api\Action
 		$queryStrings[] = http_build_query($params);
 
 		// build the api query strings
-		$useGeneratorRedirects = false;
+		$apiKey = array();
 		foreach ($this->apiList() as $api)
 		{
 			$queryStrings[] = $api->asQueryString();
+
+			if ($api->isGenerator())
+			{
+				$apiKey[self::PARAM_GENERATOR][] = $api->apiQueryIdentifier();
+			}
+			else
+			{
+				$apiKey[$api->apiQueryName()][] = $api->apiQueryIdentifier();
+			}
 		}
+
+		$apis = array();
+		foreach ($apiKey as $key => $v)
+		{
+			$apis[$key] = implode('|', $v);
+		}
+		$queryStrings[] = http_build_query($apis);
 
 		// build and return the query string
 		return implode('&', $queryStrings);
