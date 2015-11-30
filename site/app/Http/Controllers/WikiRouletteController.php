@@ -36,11 +36,12 @@ class WikiRouletteController extends Controller
 			$request->session()->put(self::SESSION_RANDOM_PAGES, $pages);
 		}
 
-		foreach ($pages as $page)
-		{
-			echo $page;
-			echo "<br /><br />";
-		}
+		$viewData = array(
+			'title' => 'Nice Spin!',
+			'pages' => $pages,
+			);
+
+		return view('wikiroulette.index', $viewData);
 	}
 
 	/**
