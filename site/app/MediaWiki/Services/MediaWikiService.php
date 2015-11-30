@@ -13,6 +13,7 @@ use App\MediaWiki\Api\Apis\PropCategoriesApi;
 use App\MediaWiki\Api\Apis\PropPageImagesApi;
 use App\MediaWiki\Api\Executor;
 use App\MediaWiki\Consumers\RandomPageConsumer;
+use App\MediaWiki\Consumers\DetailConsumer;
 
 /**
  * Consumes the MediaWiki API
@@ -54,15 +55,18 @@ class MediaWikiService implements \App\MediaWiki\Contracts\MediaWiki
 	{
 		$apis = array();
 		$apis[] = new PropCategoriesApi();
-		$apis[] = new PropInfoApi(array(PropInfoApi::PARAM_PROP => 'url'));
+		$apis[] = new PropInfoApi(array(PropInfoApi::PARAM_PROP => 'url|displaytitle'));
 		$apis[] = new PropPageImagesApi();
 
 		$action = new QueryAction(array(QueryAction::PARAM_PAGEIDS => $id), $apis);
 
 		$executor = new Executor($action);
+		$result = $executor->request();
 
-		$result[] = $executor->request();
-		print_r($executor->finalUrls());
-		return $result;
+		$consumer = new DetailConsumer();
+		$consumer->consume(json_decode($result));
+
+		// print_r($executor->finalUrls());
+		return $consumer->getData();
 	}
 }

@@ -38,6 +38,10 @@ class WikiRouletteController extends Controller
 	public function detail(Request $request, MediaWiki $mediaWiki, $id)
 	{
 		// FIXME just for testing
-		return print_r($mediaWiki->getDetail($id));
+		foreach ($mediaWiki->getDetail($id) as $detail)
+		{
+			echo $detail;
+			echo "<br /><br />";
+		}
 	}
 }
