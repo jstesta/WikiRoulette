@@ -12,18 +12,13 @@ use App\MediaWiki\Api\Apis\PropInfoApi;
 use App\MediaWiki\Api\Apis\PropCategoriesApi;
 use App\MediaWiki\Api\Apis\PropPageImagesApi;
 use App\MediaWiki\Api\Executor;
+use App\MediaWiki\Consumers\RandomPageConsumer;
 
 /**
  * Consumes the MediaWiki API
  */
 class MediaWikiService implements \App\MediaWiki\Contracts\MediaWiki
 {
-	// TODO move these to application configuration vars
-	private static $SERVICE_PROTOCOL = 'https';
-	private static $SERVICE_DOMAIN = 'wikipedia.org';
-	private static $SERVICE_PORT = '';
-	private static $SERVICE_API = '/w/api.php';
-
 	/**
 	 * Fetch random MediaWiki IDs
 	 *
@@ -33,19 +28,19 @@ class MediaWikiService implements \App\MediaWiki\Contracts\MediaWiki
 	 */
 	public function getRandomPages($count = '1', $locale = '')
 	{
-		$url = $this->buildAPIBaseURL();
-
 		$apis = array();
 		$apis[] = new ListRandomApi(array(ListRandomApi::PARAM_LIMIT => $count), true);
 		$apis[] = new PropInfoApi();
 
 		$action = new QueryAction(array(), $apis);
 
-		$executor = new Executor($url, $action);
+		$executor = new Executor($action, $locale);
+		$result = $executor->request();
 
-		$result[] = $executor->request();
-		print_r($executor->finalUrls());
-		return $result;
+		$consumer = new RandomPageConsumer();
+		$consumer->consume(json_decode($result));
+
+		return $consumer->getData();
 	}
 
 	/**
@@ -57,41 +52,17 @@ class MediaWikiService implements \App\MediaWiki\Contracts\MediaWiki
 	 */
 	public function getDetail($id)
 	{
-		$url = $this->buildAPIBaseURL();
-
 		$apis = array();
 		$apis[] = new PropCategoriesApi();
+		$apis[] = new PropInfoApi(array(PropInfoApi::PARAM_PROP => 'url'));
 		$apis[] = new PropPageImagesApi();
 
 		$action = new QueryAction(array(QueryAction::PARAM_PAGEIDS => $id), $apis);
 
-		$executor = new Executor($url, $action);
+		$executor = new Executor($action);
 
 		$result[] = $executor->request();
 		print_r($executor->finalUrls());
 		return $result;
-	}
-
-	/**
-	 * Builds the MediaWiki API URL using the specified locale, or the
-	 * current App locale if no locale is specified
-	 *
-	 * @return string
-	 */
-	private function buildAPIBaseURL($locale = '')
-	{
-		if ($locale == '')
-		{
-			$locale = App::getLocale();
-		}
-
-		// builds a string like 'https://en.wikipedia.org/w/api.php'
-		return self::$SERVICE_PROTOCOL
-			. '://'
-			. $locale
-			. '.'
-			. self::$SERVICE_DOMAIN
-			. self::$SERVICE_PORT
-			. self::$SERVICE_API;
 	}
 }

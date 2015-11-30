@@ -2,6 +2,8 @@
 
 namespace App\MediaWiki\Api;
 
+use App;
+
 /**
  * Makes requests to the MediaWiki API
  *
@@ -9,17 +11,25 @@ namespace App\MediaWiki\Api;
  */
 class Executor
 {
+	// TODO move these to application configuration vars
+	const SERVICE_PROTOCOL = 'https';
+	const SERVICE_DOMAIN = 'wikipedia.org';
+	const SERVICE_PORT = '';
+	const SERVICE_API = '/w/api.php';
+
 	// TODO: move to configuration var
 	const USER_AGENT = 'WikiRoulette/1.1 (https://github.com/jstesta/WikiRoulette; jstesta@gmail.com)';
 
 	private $baseUrl;
+	private $locale;
 	private $action;
 	private $urls = array();
 
-	public function __construct($baseUrl, $action)
+	public function __construct($action, $locale = '')
 	{
-		$this->baseUrl = $baseUrl;
+		$this->locale = $locale;
 		$this->action = $action;
+		$this->buildAPIBaseURL($locale);
 	}
 
 	/**
@@ -30,7 +40,7 @@ class Executor
 	public function request()
 	{
 		$defaultParams = array(
-			'format' => 'jsonfm',
+			'format' => 'json',
 			'utf8' => '' // make sure output is UTF-8 encoded
 			);
 
@@ -78,5 +88,28 @@ class Executor
 	public function finalUrls()
 	{
 		return $this->urls;
+	}
+
+	/**
+	 * Builds the MediaWiki API URL using the specified locale, or the
+	 * current App locale if no locale is specified
+	 *
+	 * @return string
+	 */
+	private function buildAPIBaseURL($locale = '')
+	{
+		if ($locale == '')
+		{
+			$locale = App::getLocale();
+		}
+
+		// builds a string like 'https://en.wikipedia.org/w/api.php'
+		$this->baseUrl = self::SERVICE_PROTOCOL
+			. '://'
+			. $locale
+			. '.'
+			. self::SERVICE_DOMAIN
+			. self::SERVICE_PORT
+			. self::SERVICE_API;
 	}
 }

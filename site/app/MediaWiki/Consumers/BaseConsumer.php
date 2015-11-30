@@ -8,7 +8,7 @@ namespace App\MediaWiki\Consumers;
 abstract class BaseConsumer implements \App\MediaWiki\Consumers\ApiConsumer
 {
 	protected $shouldContinue = false;
-	protected $continueString;
+	protected $continue = array();
 	protected $data = array();
 
 	/**
@@ -24,6 +24,16 @@ abstract class BaseConsumer implements \App\MediaWiki\Consumers\ApiConsumer
 	public function shouldContinue()
 	{
 		return $this->shouldContinue;
+	}
+
+	/**
+	 * Get the 'continue' array returned by the API
+	 *
+	 * @return mixed
+	 */
+	public function getContinue()
+	{
+		return $this->continue;
 	}
 
 	/**

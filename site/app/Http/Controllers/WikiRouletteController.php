@@ -23,7 +23,11 @@ class WikiRouletteController extends Controller
 	public function index(Request $request, MediaWiki $mediaWiki)
 	{
 		// FIXME just for testing
-		return print_r($mediaWiki->getRandomPages());
+		foreach ($mediaWiki->getRandomPages(10) as $page)
+		{
+			echo $page;
+			echo "<br /><br />";
+		}
 	}
 
 	/**

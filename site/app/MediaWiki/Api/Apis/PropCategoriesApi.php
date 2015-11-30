@@ -15,7 +15,7 @@ class PropCategoriesApi extends \App\MediaWiki\Api\Apis\ApiBase
 
 	private $parameters = array(
 		self::PARAM_SHOW => '!hidden',
-		self::PARAM_LIMIT => '1',
+		self::PARAM_LIMIT => '10',
 		);
 
 	/**

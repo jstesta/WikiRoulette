@@ -14,7 +14,6 @@ class PropPageImagesApi extends \App\MediaWiki\Api\Apis\ApiBase
 	const PARAM_CONTINUE = 'picontinue';
 
 	private $parameters = array(
-		self::PARAM_PROP => 'thumbnail',
 		self::PARAM_LIMIT => '1',
 		);
 
