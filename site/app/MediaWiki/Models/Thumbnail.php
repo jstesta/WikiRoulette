@@ -10,12 +10,14 @@ class Thumbnail
 	private $source;
 	private $width;
 	private $height;
+	private $original;
 
-	function __construct($source, $width = -1, $height = -1)
+	function __construct($source, $width = -1, $height = -1, $original)
 	{
 		$this->source = $source;
 		$this->width = $width;
 		$this->height = $height;
+		$this->original = $original;
 	}
 
 	function getSource()
@@ -33,8 +35,13 @@ class Thumbnail
 		return $this->height;
 	}
 
+	function getOriginal()
+	{
+		return $this->original;
+	}
+
 	function __toString()
 	{
-		return 'Thumbnail[source=' . $this->source . ', width=' . $this->width . ', height=' . $this->height . ']';
+		return 'Thumbnail[source=' . $this->source . ', width=' . $this->width . ', height=' . $this->height . ', original=' . $this->original . ']';
 	}
 }

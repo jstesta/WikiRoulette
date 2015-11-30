@@ -55,16 +55,22 @@ class WikiRouletteController extends Controller
 		$sessionKey = self::SESSION_DETAIL_PREFIX . $id;
 		if ($request->session()->has($sessionKey))
 		{
-			$detail = $request->session()->get($sessionKey);
+			$pages = $request->session()->get($sessionKey);
 		}
 		else
 		{
-			$detail = $mediaWiki->getDetail($id);
-			$request->session()->put($sessionKey, $detail);
+			$pages = $mediaWiki->getDetail($id);
+			$request->session()->put($sessionKey, $pages);
 		}
 
-		echo $detail[0];
-		echo "<br /><br />";
+		$detail = $pages[0];
+
+		$viewData = array(
+			'title' => $detail->getTitle(),
+			'page' => $detail,
+			);
+
+		return view('wikiroulette.detail', $viewData);
 	}
 
 	/**

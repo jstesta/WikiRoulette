@@ -55,6 +55,10 @@ class DetailConsumer extends \App\MediaWiki\Consumers\BaseConsumer
 					$builder->setCategories($this->parseCategories($value));
 					break;
 
+				case 'title':
+					$builder->setTitle($value);
+					break;
+
 				case 'displaytitle':
 					$builder->setDisplayTitle($value);
 					break;
@@ -89,12 +93,15 @@ class DetailConsumer extends \App\MediaWiki\Consumers\BaseConsumer
 					$height = $value;
 					break;
 
+				case 'original':
+					$original = $value;
+
 				default:
 					break;
 			}
 		}
 
-		return new Thumbnail($source, $width, $height);
+		return new Thumbnail($source, $width, $height, $original);
 	}
 
 	private function parseCategories($data)

@@ -11,7 +11,8 @@
 <div>
 @foreach ($pages as $page)
 	<div>
-		{{ $page->getTitle() }}
+		<p>{{ $page->getId() }}</p>
+		<p>{{ $page->getTitle() }}</p>
 	</div>
 @endforeach
 </div>

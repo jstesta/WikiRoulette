@@ -12,6 +12,7 @@ class DetailPageBuilder
 	private $fullUrl;
 	private $categories;
 	private $thumbnail;
+	private $title;
 
 	private function __construct($id)
 	{
@@ -26,6 +27,12 @@ class DetailPageBuilder
 	function setId($val)
 	{
 		$this->id = $val;
+		return $this;
+	}
+
+	function setTitle($val)
+	{
+		$this->title = $val;
 		return $this;
 	}
 
@@ -56,6 +63,11 @@ class DetailPageBuilder
 	function getId()
 	{
 		return $this->id;
+	}
+
+	function getTitle()
+	{
+		return $this->title;
 	}
 
 	function getDisplayTitle()

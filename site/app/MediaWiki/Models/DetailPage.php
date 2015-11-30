@@ -14,6 +14,7 @@ class DetailPage
 	private $fullUrl;
 	private $categories;
 	private $thumbnail;
+	private $title;
 
 	/**
 	 * DetailPage constructor from builder
@@ -21,6 +22,7 @@ class DetailPage
 	public function __construct(DetailPageBuilder $b)
 	{
 		$this->id = $b->getId();
+		$this->title = $b->getTitle();
 		$this->displayTitle = $b->getDisplayTitle();
 		$this->fullUrl = $b->getFullUrl();
 		$this->categories = $b->getCategories();
@@ -30,6 +32,11 @@ class DetailPage
 	function getId()
 	{
 		return $this->id;
+	}
+
+	function getTitle()
+	{
+		return $this->title;
 	}
 
 	function getDisplayTitle()
@@ -56,6 +63,7 @@ class DetailPage
 	{
 		return 'DetailPage ['
 			. 'id=' . $this->id . ', '
+			. 'title=' . $this->title . ', '
 			. 'displayTitle=' . $this->displayTitle . ', '
 			. 'fullUrl=' . $this->fullUrl . ', '
 			. 'categories=' . print_r($this->categories, true) . ', '
