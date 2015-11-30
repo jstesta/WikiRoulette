@@ -16,6 +16,7 @@ use App\MediaWiki\MediaProperties\PageImagesProperty;
 class WikiRouletteController extends Controller
 {
 	const SESSION_RANDOM_PAGES = 'randompages';
+	const SESSION_DETAIL_PREFIX = 'detail_';
 
 	/**
 	 * The default (index) action
@@ -50,7 +51,16 @@ class WikiRouletteController extends Controller
 	public function detail(Request $request, MediaWiki $mediaWiki, $id)
 	{
 		// FIXME just for testing
-		$detail = $mediaWiki->getDetail($id);
+		$sessionKey = self::SESSION_DETAIL_PREFIX . $id;
+		if ($request->session()->has($sessionKey))
+		{
+			$detail = $request->session()->get($sessionKey);
+		}
+		else
+		{
+			$detail = $mediaWiki->getDetail($id);
+			$request->session()->put($sessionKey, $detail);
+		}
 
 		echo $detail[0];
 		echo "<br /><br />";
