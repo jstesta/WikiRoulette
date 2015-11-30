@@ -11,8 +11,7 @@
 <div>
 @foreach ($pages as $page)
 	<div>
-		<p>{{ $page->getId() }}</p>
-		<p>{{ $page->getTitle() }}</p>
+		<p><a href="/detail/{{ $page->getId() }}">{{ $page->getTitle() }}</a></p>
 	</div>
 @endforeach
 </div>
