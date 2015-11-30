@@ -16,3 +16,6 @@ Route::get('/', 'WikiRouletteController@index');
 
 // The detail view page route
 Route::get('/detail/{id}', 'WikiRouletteController@detail');
+
+// The refresh random IDs route
+Route::get('/refresh', 'WikiRouletteController@refresh');

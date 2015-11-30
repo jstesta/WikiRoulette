@@ -15,15 +15,27 @@ use App\MediaWiki\MediaProperties\PageImagesProperty;
  */
 class WikiRouletteController extends Controller
 {
+	const SESSION_RANDOM_PAGES = 'randompages';
+
 	/**
-	 * The default (index) page
+	 * The default (index) action
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(Request $request, MediaWiki $mediaWiki)
 	{
 		// FIXME just for testing
-		foreach ($mediaWiki->getRandomPages(10) as $page)
+		if ($request->session()->has(self::SESSION_RANDOM_PAGES))
+		{
+			$pages = $request->session()->get(self::SESSION_RANDOM_PAGES);
+		}
+		else
+		{
+			$pages = $mediaWiki->getRandomPages(10);
+			$request->session()->put(self::SESSION_RANDOM_PAGES, $pages);
+		}
+
+		foreach ($pages as $page)
 		{
 			echo $page;
 			echo "<br /><br />";
@@ -31,17 +43,26 @@ class WikiRouletteController extends Controller
 	}
 
 	/**
-	 * The detail view page
+	 * The detail view action
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
 	public function detail(Request $request, MediaWiki $mediaWiki, $id)
 	{
 		// FIXME just for testing
-		foreach ($mediaWiki->getDetail($id) as $detail)
-		{
-			echo $detail;
-			echo "<br /><br />";
-		}
+		$detail = $mediaWiki->getDetail($id);
+
+		echo $detail[0];
+		echo "<br /><br />";
+	}
+
+	/**
+	 * The refresh random pages action
+	 */
+	public function refresh(Request $request)
+	{
+		$request->session()->forget(self::SESSION_RANDOM_PAGES);
+
+		return redirect()->action('WikiRouletteController@index');
 	}
 }
