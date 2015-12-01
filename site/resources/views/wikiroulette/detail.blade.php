@@ -3,11 +3,11 @@
 @section('title', $title)
 
 @section('custom_nav')
-<li><a href="/">Go Back</a></li>
 @endsection
 
 @section('content')
 <div>
+	<a href="/" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-chevron-left"></span> Back to Results</a>
 	<h2>
 		{!! $page->getDisplayTitle() !!}
 	</h2>
