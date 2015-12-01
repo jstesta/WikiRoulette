@@ -22,3 +22,9 @@ Route::get('/refresh', 'WikiRouletteController@refresh');
 
 // The change locale route
 Route::get('/locale/{locale}', 'WikiRouletteController@locale');
+
+// The create bookmark route
+Route::get('/b', 'WikiRouletteController@bookmark');
+
+// The load bookmark route
+Route::get('/b/{id}', 'WikiRouletteController@bookmarkLoad');

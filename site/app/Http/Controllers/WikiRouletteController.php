@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\MediaWiki\Contracts\MediaWiki;
 use App\MediaWiki\MediaProperties\CategoriesProperty;
 use App\MediaWiki\MediaProperties\PageImagesProperty;
+use App\Bookmark;
 
 /**
  * WikiRoulette controller
@@ -110,5 +111,59 @@ class WikiRouletteController extends Controller
 		$request->session()->flash(self::SESSION_FORCE_RELOAD, true);
 
 		return redirect()->action('WikiRouletteController@index');
+	}
+
+	/**
+	 * The create bookmark action
+	 */
+	public function bookmark(Request $request)
+	{
+		// Validate that the session has data
+		if (!$request->session()->has(self::SESSION_RANDOM_PAGES))
+		{
+			return redirect()->action('WikiRouletteController@index');
+		}
+
+		// Take the RandomPage data in the user's session and store it in the db
+		$pages = $request->session()->get(self::SESSION_RANDOM_PAGES);
+		$pages = serialize($pages);
+		$locale = config('app.locale');
+
+		// Check if a matching bookmark already exists before creating a new one
+		$existing = Bookmark::where('locale', $locale)->where('data', '=', $pages)->first();
+		if (!empty($existing))
+		{
+			return redirect()->action('WikiRouletteController@bookmarkLoad', $existing->id);
+		}
+
+		// Make a new one
+		$bookmark = new Bookmark;
+		$bookmark->locale = $locale;
+		$bookmark->data = $pages;
+		$bookmark->save();
+
+		return redirect()->action('WikiRouletteController@bookmarkLoad', $bookmark->id);
+	}
+
+	/**
+	 * The load bookmark action
+	 */
+	public function bookmarkLoad(Request $request, $id)
+	{
+		$bookmark = Bookmark::findOrFail($id);
+
+		$locale = $bookmark->locale;
+		$pages = unserialize($bookmark->data);
+
+		$request->session()->put(self::SESSION_LOCALE, $locale);
+		$request->session()->put(self::SESSION_RANDOM_PAGES, $pages);
+
+		$viewData = array(
+			'lang' => config('app.locale'),
+			'title' => 'Nice Spin!',
+			'pages' => $pages,
+			);
+
+		return view('wikiroulette.index', $viewData);
 	}
 }
