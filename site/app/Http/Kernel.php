@@ -18,6 +18,9 @@ class Kernel extends HttpKernel
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \App\Http\Middleware\VerifyCsrfToken::class,
+
+        // Custom middleware to set the app locale
+        \App\Http\Middleware\LocaleMiddleWare::class,
     ];
 
     /**

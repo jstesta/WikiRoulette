@@ -19,3 +19,6 @@ Route::get('/detail/{id}', 'WikiRouletteController@detail');
 
 // The refresh random IDs route
 Route::get('/refresh', 'WikiRouletteController@refresh');
+
+// The change locale route
+Route::get('/locale/{locale}', 'WikiRouletteController@locale');
