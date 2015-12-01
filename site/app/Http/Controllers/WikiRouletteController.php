@@ -24,6 +24,20 @@ class WikiRouletteController extends Controller
 	// TODO: move to a configuration var and allow user to set it
 	const RANDOM_PAGES = 10;
 
+	const LANGUAGES = array(
+		'en' => 'English',
+		'ja' => '日本語',
+		'ru' => 'русский',
+		'fr' => 'français',
+		'nl' => 'Nederlands',
+		'de' => 'Deutsch',
+		'sv' => 'svenska',
+		'it' => 'italiano',
+		'es' => 'español',
+		'pl' => 'polski',
+		'zh' => '中文',
+		);
+
 	/**
 	 * The default (index) action
 	 *
@@ -50,6 +64,7 @@ class WikiRouletteController extends Controller
 			'lang' => config('app.locale'),
 			'title' => 'Nice Spin!',
 			'pages' => $pages,
+			'languages' => self::LANGUAGES,
 			);
 
 		return view('wikiroulette.index', $viewData);
@@ -75,10 +90,15 @@ class WikiRouletteController extends Controller
 
 		$detail = $pages[0];
 
+		// EXPERIMENTAL: feature to see if it's easy to link to categories
+		// TODO: Move to a separate function or configuration
+		$categoryUrl = 'https://' . config('app.locale') . '.wikipedia.org/wiki/';
+
 		$viewData = array(
 			'lang' => config('app.locale'),
 			'title' => $detail->getTitle(),
 			'page' => $detail,
+			'categoryUrl' => $categoryUrl,
 			);
 
 		return view('wikiroulette.detail', $viewData);
@@ -99,10 +119,7 @@ class WikiRouletteController extends Controller
 	 */
 	public function locale(Request $request, $locale)
 	{
-		// TODO move to configuration
-		$acceptableLocales = array('en', 'ja');
-
-		if (empty($locale) || !in_array($locale, $acceptableLocales))
+		if (empty($locale) || !array_key_exists($locale, self::LANGUAGES))
 		{
 			$locale = config('app.fallback_locale');
 		}
@@ -162,6 +179,7 @@ class WikiRouletteController extends Controller
 			'lang' => config('app.locale'),
 			'title' => 'Nice Spin!',
 			'pages' => $pages,
+			'languages' => self::LANGUAGES,
 			);
 
 		return view('wikiroulette.index', $viewData);
