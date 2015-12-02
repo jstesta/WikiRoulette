@@ -40,6 +40,6 @@ It loads a small amount of data about a few random Wikipedia pages, and displays
   * `php artisan key:generate`
   * Set up your local database configuration in the file `.env`.  You should also set `APP_DEBUG=false` if this were a real production environment
   * `php artisan migrate` to set up the database table
-3. (Production setup only) Set up your web server to server files from the `wikiroulette/site/public` directory
+3. (Production setup only) Set up your web server to serve files from the `wikiroulette/site/public` directory
 4. The web page should now be accessable from the browser
 
