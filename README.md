@@ -19,7 +19,7 @@ It loads a small amount of data about a few random Wikipedia pages, and displays
 
 1. Clone this repository into a new directory
 2. Install [Composer](https://getcomposer.org/) into the new directory
-3. Run `composer install` to download the Laravel Homestead dependency
+3. Run `php composer.phar install` to download the Laravel Homestead dependency
 4. If you don't have a personal SSH key set up, generate one with SSH
 5. Run `vagrant up` (the first time may take a while as it downloads the virtual machine image)
 6. After it finishes, SSH into the server `ssh vagrant@127.0.0.1:2222` (password: `vagrant`) and continue from step 2 of the For Production setup guide
@@ -36,6 +36,8 @@ It loads a small amount of data about a few random Wikipedia pages, and displays
 1. Clone this repository into a new directory
 2. cd into the new directory and run the following steps:
   * `cd wikiroulette/site`
+  * Install [Composer](https://getcomposer.org/) here `curl -sS https://getcomposer.org/installer | php`
+  * `php composer.phar install`
   * `cp .env.example .env`
   * `php artisan key:generate`
   * Set up your local database configuration in the file `.env`.  You should also set `APP_DEBUG=false` if this were a real production environment
