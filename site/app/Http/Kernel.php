@@ -20,7 +20,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\VerifyCsrfToken::class,
 
         // Custom middleware to set the app locale
-        \App\Http\Middleware\LocaleMiddleWare::class,
+        \App\Http\Middleware\LocaleMiddleware::class,
     ];
 
     /**
